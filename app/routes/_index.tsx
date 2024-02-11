@@ -1,5 +1,6 @@
 import type { MetaFunction } from "@remix-run/node";
-import ContactsList from "~/components/contacts/contactsList";
+import ContactsList from "~/components/contactsList";
+import './../styles/App.css';
 
 export const meta: MetaFunction = () => {
   return [
@@ -10,7 +11,7 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
+    <div className="wrapper">
       <h1>Contacts</h1>
 			<ContactsList />
     </div>

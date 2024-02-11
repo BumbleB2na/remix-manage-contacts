@@ -1,0 +1,17 @@
+.wrapper {
+	font-family: system-ui, sans-serif;
+	line-height: "1.8";
+}
+table {
+	border: 1px solid #dcdcdc;
+	border-radius: 5px;
+}
+thead th {
+  text-align: left;
+}
+tbody tr {
+  background-color: #fbfbfb;
+}
+tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
