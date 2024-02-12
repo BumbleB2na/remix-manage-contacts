@@ -6,7 +6,7 @@ export default function Index() {
   const navigate = useNavigate();
 
 	useEffect(() => {
-		navigate('/contacts/list', { replace: true })
+		navigate('/contacts/main', { replace: true })
 		return;
 	}, [navigate])
 

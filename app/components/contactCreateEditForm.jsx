@@ -13,9 +13,21 @@ ContactCreateEditForm.propTypes = {
 };
 
 const ContactFormSchema = z.object({
-  firstName: z.string().min(1).max(50),
-  lastName: z.string().min(1).max(50),
-  email: z.string().email().max(200),
+  firstName: z
+    .string()
+    .min(3, "Must be more than 2 characters")
+    .max(25, "Must be less than 25 characters"),
+  lastName: z
+    .union([
+      z
+        .string()
+        .min(2, "Must be more than 1 character")
+        .max(30, "Must be less than 30 characters"),
+      z.string().length(0),
+    ])
+    .optional()
+    .transform((e) => (e === "" ? undefined : e)),
+  email: z.string().email("Invalid email address").max(200),
 });
 
 export default function ContactCreateEditForm({ contacts, setContacts }) {
@@ -27,7 +39,7 @@ export default function ContactCreateEditForm({ contacts, setContacts }) {
     if (!params?.email) return;
     const contact = contacts.find((c) => c.email === params.email);
     if (!contact) {
-      navigate("/contacts/list");
+      navigate("/contacts/main");
       return;
     }
     const form = document.querySelector("form");
@@ -73,7 +85,7 @@ export default function ContactCreateEditForm({ contacts, setContacts }) {
       );
     }
     event.target.reset();
-    navigate("/contacts/list");
+    navigate("/contacts/main");
   };
 
   return (
@@ -105,16 +117,16 @@ export default function ContactCreateEditForm({ contacts, setContacts }) {
           <label htmlFor="email">Email</label>
         </div>
         <div>
-          <input type="email" name="email" id="email" disabled={params.email} />
+          <input type="text" name="email" id="email" disabled={params.email} />
         </div>
         {errors.email && <div className="error">{errors.email.join(". ")}</div>}
       </p>
       <p>
-        <div>
-          <button type="submit">{ params.email ? 'Update' : 'Add' }</button>
-          <Link to="/contacts/list" style={{ marginLeft: "10px" }}>
+        <div style={{ textAlign: "right" }}>
+          <Link to="/contacts/main" style={{ marginRight: "10px" }}>
             <button>Cancel</button>
           </Link>
+          <button type="submit">{params.email ? "Update" : "Add"}</button>
         </div>
       </p>
     </form>

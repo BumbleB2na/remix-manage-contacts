@@ -21,7 +21,7 @@ export default function ContactsList() {
 					<th>Name</th>
 					<th>Email</th>
 					<th></th>
-					<th style={{ textAlign: 'right' }}><Link to='/contacts/new'><button>Add</button></Link></th>
+					<th style={{ textAlign: 'right' }}><Link to='/contacts/create'><button>Create</button></Link></th>
 				</tr>
 			</thead>
 			<tbody>
