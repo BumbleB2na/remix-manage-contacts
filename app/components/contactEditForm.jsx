@@ -1,9 +1,10 @@
-import { Link, useNavigate } from "@remix-run/react";
-import { useState } from "react";
+/* eslint-disable react/prop-types */
+import { Link, useNavigate, useParams } from "@remix-run/react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 import PropTypes from 'prop-types';
 
-ContactCreateForm.propTypes = {
+ContactEditForm.propTypes = {
 	contacts: PropTypes.arrayOf(
 		PropTypes.shape({
 			email: PropTypes.string.isRequired,
@@ -15,12 +16,25 @@ ContactCreateForm.propTypes = {
 const ContactFormSchema = z.object({
   firstName: z.string().min(1).max(50),
   lastName: z.string().min(1).max(50),
-  email: z.string().email().max(200),
 });
 
-export default function ContactCreateForm({ contacts, setContacts }) {
+export default function ContactEditForm({ contacts, setContacts }) {
   const [errors, setErrors] = useState({});
+	const params = useParams();
   const navigate = useNavigate();
+
+	useEffect(() => {
+		if (!params?.email || !contacts) return;
+		const contact = contacts.find((c) => c.email === params.email);
+		if (!contact) {
+			navigate("/contacts/list");
+			return;
+		}
+		const form = document.querySelector("form");
+		form.firstName.value = contact.firstName;
+		form.lastName.value = contact.lastName;
+		form.email.value = contact.email;
+	}, [params, contacts, navigate])
 
   const handleFormSubmit = (event) => {
     setErrors({});
@@ -29,15 +43,13 @@ export default function ContactCreateForm({ contacts, setContacts }) {
     let contact;
     try {
       contact = ContactFormSchema.parse(Object.fromEntries(formData));
+			contact.email = params.email;
     } catch (err) {
       const fieldErrors = err.flatten().fieldErrors;
       setErrors(fieldErrors);
+      return;
     }
-		if(contacts.some(c => c.email === contact.email)) {
-			setErrors({ email: ["Email already exists"] });
-		}
-		if(Object.keys(errors).length > 0) return;
-    setContacts([contact, ...contacts].sort((a, b) => a.firstName.localeCompare(b.firstName)));
+		setContacts(contacts.map((c) => (c.email === params.email ? contact : c)).sort((a, b) => a.firstName.localeCompare(b.firstName)));
     event.target.reset();
 		navigate("/contacts/list");
   };
@@ -71,14 +83,14 @@ export default function ContactCreateForm({ contacts, setContacts }) {
 					<label htmlFor="email">Email</label>
 				</div>
 				<div>
-					<input type="email" name="email" id="email" />
+					<input type="email" name="email" id="email" disabled />
 				</div>
 				{errors.email && <div className="error">{errors.email.join(". ")}</div>}
 			</p>
 			<p>
 				<div>
-					<button type="submit">Add</button>
-						<Link to="/contacts/list" style={{ marginLeft: '10px' }}>
+					<button type="submit">Update</button>
+					<Link to="/contacts/list" style={{ marginLeft: '10px' }}>
 						<button>Cancel</button>
 					</Link>
 				</div>

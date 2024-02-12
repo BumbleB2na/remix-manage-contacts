@@ -1,7 +1,12 @@
-import { Link, useOutletContext } from "@remix-run/react";
+import { Link, useNavigate, useOutletContext } from "@remix-run/react";
 
 export default function ContactsList() {
   const [contacts, setContacts] = useOutletContext();
+	const navigate = useNavigate();
+
+	const handleEditContact = (contact) => {
+		navigate(`/contacts/${contact.email}`);
+	}
 
 	const handleRemoveContact = (contact) => {
 		if (!confirm(`Are you sure you want to remove ${contact.firstName} ${contact.lastName}?`))
@@ -15,7 +20,8 @@ export default function ContactsList() {
 				<tr>
 					<th>Name</th>
 					<th>Email</th>
-					<th><Link to='/contacts/new'><button>Add</button></Link></th>
+					<th></th>
+					<th style={{ textAlign: 'right' }}><Link to='/contacts/new'><button>Add</button></Link></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -23,6 +29,7 @@ export default function ContactsList() {
 					<tr key={contact.email}>
 						<td>{contact.firstName} {contact.lastName}</td>
 						<td>{contact.email}</td>
+						<td><button onClick={() => handleEditContact(contact)}>Edit</button></td>
 						<td><button onClick={() => handleRemoveContact(contact)}>Remove</button></td>
 					</tr>
 				))}
