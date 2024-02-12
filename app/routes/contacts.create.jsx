@@ -14,7 +14,7 @@ export default function ContactsCreatePage() {
   return (
     <>
       <h1>Create Contact</h1>
-			<ContactCreateEditForm contacts={contacts} setContacts={setContacts} />
+      <ContactCreateEditForm contacts={contacts} setContacts={setContacts} />
     </>
   );
 }

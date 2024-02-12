@@ -11,10 +11,10 @@ export const meta = () => {
 export default function ContactsPage() {
   const [contacts, setContacts] = useOutletContext();
 
-	return (
+  return (
     <>
       <h1>Main</h1>
-			<ContactsList contacts={contacts} setContacts={setContacts} />
+      <ContactsList contacts={contacts} setContacts={setContacts} />
     </>
-	)
+  );
 }
