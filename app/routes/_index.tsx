@@ -1,19 +1,16 @@
-import type { MetaFunction } from "@remix-run/node";
-import ContactsList from "~/components/contactsList";
 import './../styles/App.css';
-
-export const meta: MetaFunction = () => {
-  return [
-    { title: "Contacts" },
-    { name: "description", content: "Manage your list of personal contacts" },
-  ];
-};
+import { useEffect } from "react";
+import { useNavigate } from "@remix-run/react";
 
 export default function Index() {
+  const navigate = useNavigate();
+
+	useEffect(() => {
+		navigate('/contacts/list', { replace: true })
+		return;
+	}, [navigate])
+
   return (
-    <div className="wrapper">
-      <h1>Contacts</h1>
-			<ContactsList />
-    </div>
+    <></>
   );
 }
