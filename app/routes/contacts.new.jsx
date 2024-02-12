@@ -1,5 +1,5 @@
 import { useOutletContext } from "@remix-run/react";
-import ContactCreateForm from "~/components/contactCreateForm";
+import ContactCreateEditForm from "~/components/contactCreateEditForm";
 
 export const meta = () => {
   return [
@@ -14,7 +14,7 @@ export default function ContactsNewPage() {
   return (
     <>
       <h1>Add Contact</h1>
-			<ContactCreateForm contacts={contacts} setContacts={setContacts} />
+			<ContactCreateEditForm contacts={contacts} setContacts={setContacts} />
     </>
   );
 }
